@@ -1,16 +1,26 @@
 import { Input } from 'antd';
 import { IoClose, IoNotificationsSharp } from 'react-icons/io5';
 
+import { Todo } from "@/models/Todo";
 import { Button } from '@components/FormComponents';
 
 const { TextArea } = Input;
 
-export default function TodoForm() {
+interface ITodoForm {
+	data: Todo | null;
+	onClose: () => void;
+}
+
+export default function TodoForm({ onClose, data }: ITodoForm) {
+	const inEditMode = !!data;
+
+	// const [form] = useForm();
+
 	return (
 		<div className="flex flex-col gap-4 p-6">
 			<div className="flex items-center justify-between">
-				<h3 className="text-lg font-semibold text-textColor">Add Task</h3>
-				<button>
+				<h3 className="text-lg font-semibold text-textColor">{inEditMode ? "Edit" : "Add"} Task</h3>
+				<button onClick={onClose}>
 					<IoClose className="text-lg text-textColor" />
 				</button>
 			</div>
@@ -31,7 +41,7 @@ export default function TodoForm() {
 			</div>
 			<div className="grid grid-cols-2 gap-4">
 				<Button>Cancel</Button>
-				<Button type="primary">Add</Button>
+				<Button type="primary">{inEditMode ? "Edit" : "Add"}</Button>
 			</div>
 		</div>
 	);

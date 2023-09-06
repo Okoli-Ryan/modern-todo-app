@@ -1,0 +1,9 @@
+.my-todos {
+	& .ant-list-items {
+		@apply flex flex-col gap-4;
+	}
+
+	& .ant-list-pagination {
+		text-align: center;
+	}
+}

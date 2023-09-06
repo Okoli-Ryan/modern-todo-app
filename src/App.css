@@ -15,6 +15,10 @@ input {
     @apply rounded-lg px-3 py-3  bg-[#F9FAFB] border-[#D0D5DD] border-2
 }
 
+.ant-btn-primary {
+    @apply bg-primary
+}
+
 .ant-btn-primary p {
     color: white
 }
