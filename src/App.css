@@ -22,3 +22,7 @@ input {
 .ant-btn-primary p {
     color: white
 }
+
+.small-btn > span{
+    @apply text-xs
+}

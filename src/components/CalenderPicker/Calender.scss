@@ -1,0 +1,70 @@
+/* Calendar.css */
+
+#calendar {
+	text-align: center;
+	margin: 0 auto;
+    width: max-content;
+}
+
+.calendar-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.prev-button,
+.next-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+table {
+	width: 100%;
+}
+
+th,
+td {
+    cursor: pointer;
+}
+
+tbody, thead > tr {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(7, minmax(20px, 1fr));
+    justify-items: center;
+}
+
+th {
+	background-color: #f2f2f2;
+	font-weight: bold;
+}
+
+.today {
+	background-color: #ccc;
+}
+
+.selected-date {
+	background-color: #3F5BF6;
+	color: #fff;
+}
+
+.other-month {
+	color: #ccc;
+}
+
+.day {
+    border-radius: 50%;
+
+}
+
+.day > span {
+    width: 32px;
+    height: 32px;
+    font-size: x-small;
+    display: flex;
+    align-self: center;
+    justify-content:center;
+    align-items: center;
+}

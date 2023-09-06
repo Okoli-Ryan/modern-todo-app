@@ -1,8 +1,11 @@
-import { Input } from 'antd';
-import { IoClose, IoNotificationsSharp } from 'react-icons/io5';
+import { Input, Popover } from "antd";
+import { IoClose, IoNotificationsSharp } from "react-icons/io5";
 
 import { Todo } from "@/models/Todo";
-import { Button } from '@components/FormComponents';
+import CalendarPicker from "@components/CalenderPicker";
+import { Button } from "@components/FormComponents";
+
+import useTodoForm from "./useTodoForm";
 
 const { TextArea } = Input;
 
@@ -14,7 +17,7 @@ interface ITodoForm {
 export default function TodoForm({ onClose, data }: ITodoForm) {
 	const inEditMode = !!data;
 
-	// const [form] = useForm();
+	const { onSelectDate, currentDate, dateButtonLabel } = useTodoForm();
 
 	return (
 		<div className="flex flex-col gap-4 p-6">
@@ -26,7 +29,9 @@ export default function TodoForm({ onClose, data }: ITodoForm) {
 			</div>
 			<TextArea rows={4} />
 			<div className="grid grid-cols-3 gap-4">
-				<Input />
+				<Popover trigger="click" destroyTooltipOnHide content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
+					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>
+				</Popover>
 				<Input />
 				<Input />
 			</div>
