@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CalendarProps } from "./CalenderPicker";
 import CalenderButton from "./components/CalenderButton";

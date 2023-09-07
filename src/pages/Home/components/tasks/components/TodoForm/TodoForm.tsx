@@ -4,6 +4,7 @@ import { IoClose, IoNotificationsSharp } from "react-icons/io5";
 import { Todo } from "@/models/Todo";
 import CalendarPicker from "@components/CalenderPicker";
 import { Button } from "@components/FormComponents";
+import TimePicker from "@components/TimePicker";
 
 import useTodoForm from "./useTodoForm";
 
@@ -17,7 +18,7 @@ interface ITodoForm {
 export default function TodoForm({ onClose, data }: ITodoForm) {
 	const inEditMode = !!data;
 
-	const { onSelectDate, currentDate, dateButtonLabel } = useTodoForm();
+	const { onSelectDate, currentDate, dateButtonLabel, setEndTime, setStartTime, onChangeTitle, handleSubmit } = useTodoForm();
 
 	return (
 		<div className="flex flex-col gap-4 p-6">
@@ -27,13 +28,13 @@ export default function TodoForm({ onClose, data }: ITodoForm) {
 					<IoClose className="text-lg text-textColor" />
 				</button>
 			</div>
-			<TextArea rows={4} />
-			<div className="grid grid-cols-3 gap-4">
+			<TextArea rows={4} onChange={onChangeTitle} />
+			<div className="grid grid-cols-3 gap-2">
 				<Popover trigger="click" destroyTooltipOnHide content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
 					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>
 				</Popover>
-				<Input />
-				<Input />
+				<TimePicker onChangeDate={setStartTime} />
+				<TimePicker onChangeDate={setEndTime} />
 			</div>
 			<div className="flex items-center gap-2">
 				<span>
@@ -46,7 +47,9 @@ export default function TodoForm({ onClose, data }: ITodoForm) {
 			</div>
 			<div className="grid grid-cols-2 gap-4">
 				<Button>Cancel</Button>
-				<Button type="primary">{inEditMode ? "Edit" : "Add"}</Button>
+				<Button onClick={handleSubmit} type="primary">
+					{inEditMode ? "Edit" : "Add"}
+				</Button>
 			</div>
 		</div>
 	);

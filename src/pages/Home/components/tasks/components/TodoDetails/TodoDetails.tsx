@@ -11,8 +11,6 @@ interface ITodoDetails {
 }
 
 export default function TodoDetails({ data, setOnEditMode, onClose }: ITodoDetails) {
-	console.log(data);
-
 	return (
 		<div className="flex flex-col gap-4 p-6">
 			<div className="flex items-center justify-end">

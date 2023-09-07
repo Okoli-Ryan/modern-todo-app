@@ -1,0 +1,18 @@
+.ant-picker {
+
+    @apply p-0;
+
+	&-input {
+		flex-direction: row-reverse;
+		gap: 4px;
+
+		&  input {
+			font-size: 12px !important;
+            text-align: center;
+		}
+	}
+
+    &-clear {
+        right: 1rem
+    }
+}
