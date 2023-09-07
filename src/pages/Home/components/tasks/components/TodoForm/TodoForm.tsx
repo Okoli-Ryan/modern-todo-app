@@ -13,13 +13,15 @@ const { TextArea } = Input;
 export interface ITodoForm {
 	data: Todo | null;
 	onClose: () => void;
+	onAddTodo: (e: Todo) => void;
 }
 
-export default function TodoForm({ onClose, data }: ITodoForm) {
+export default function TodoForm({ onClose, data, onAddTodo }: ITodoForm) {
 	const inEditMode = !!data;
 
 	const { onSelectDate, currentDate, dateButtonLabel, setEndTime, setStartTime, onChangeTitle, handleSubmit, isLoading } = useTodoForm({
 		onClose,
+		onAddTodo,
 		data,
 	});
 
@@ -31,7 +33,7 @@ export default function TodoForm({ onClose, data }: ITodoForm) {
 					<IoClose className="text-lg text-textColor" />
 				</button>
 			</div>
-		<TextArea rows={4} onChange={onChangeTitle} defaultValue={data?.title} />
+			<TextArea rows={4} onChange={onChangeTitle} defaultValue={data?.title} />
 			<div className="grid grid-cols-3 gap-2">
 				<Popover trigger="click" destroyTooltipOnHide content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
 					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>

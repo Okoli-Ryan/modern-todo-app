@@ -16,7 +16,7 @@ export interface FormValues {
 	title: string;
 }
 
-export default function useTodoForm({ onClose, data }: ITodoForm) {
+export default function useTodoForm({ onClose, data, onAddTodo }: ITodoForm) {
 	const { selectedDate, selectedTodo } = useTaskContext();
 	const [isLoading, setIsLoading] = useState(false);
 	const [formValues, setFormValues] = useState<FormValues>({
@@ -55,8 +55,9 @@ export default function useTodoForm({ onClose, data }: ITodoForm) {
 	async function handleSubmitOnCreateMode(payload: Todo) {
 		setIsLoading(true);
 		try {
-			const response = await createTodoAsync(payload);
-			saveTodo({ ...response, ...payload });
+			await createTodoAsync(payload);
+			saveTodo(payload);
+			onAddTodo(payload);
 		} catch (error) {
 			console.log(error);
 		} finally {

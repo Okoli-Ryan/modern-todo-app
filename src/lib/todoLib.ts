@@ -4,14 +4,14 @@ import { Todo } from '@/models/Todo';
 export function saveTodo(todo: Todo) {
 	const allTodos = getAllTodos();
 
-	let todosForTheDay = allTodos[todo.startTime.toString()];
+	let todosForTheDay = allTodos[todoKeyFromDate(todo.startTime)];
 
 	if (!todosForTheDay) {
 		todosForTheDay = [];
 	}
 
 	todosForTheDay.unshift(todo);
-	allTodos[todo.startTime.toString()] = todosForTheDay;
+	allTodos[todoKeyFromDate(todo.startTime)] = todosForTheDay;
 	localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(allTodos));
 
 	return todo;
@@ -19,8 +19,9 @@ export function saveTodo(todo: Todo) {
 
 export function editTodo(updatedTodo: Todo) {
 	const allTodos = getAllTodos();
-	const todosForTheDay = allTodos[updatedTodo.startTime.toString()] || [];
+	const todosForTheDay = allTodos[todoKeyFromDate(updatedTodo.startTime)] || [];
 
+	//! Include logic to remove if date was changed
 	const updatedTodos = todosForTheDay.map((todo) => {
 		if (todo.id === updatedTodo.id) {
 			// Replace the existing todo with the updated one
@@ -30,19 +31,19 @@ export function editTodo(updatedTodo: Todo) {
 		}
 	});
 
-	allTodos[updatedTodo.startTime.toString()] = updatedTodos;
+	allTodos[todoKeyFromDate(updatedTodo.startTime)] = updatedTodos;
 	localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(allTodos));
 
 	return updatedTodo;
 }
 
-export function deleteTodo(todoId: number, date: Date) {
+export function deleteTodo(deletedTodo: Todo) {
 	const allTodos = getAllTodos();
-	const todosForTheDay = allTodos[date.toString()] || [];
+	const todosForTheDay = allTodos[todoKeyFromDate(deletedTodo.startTime)];
 
-	const updatedTodos = todosForTheDay.filter((todo) => todo.id !== todoId);
+	const updatedTodos = todosForTheDay.filter((todo) => todo.id !== deletedTodo.id);
 
-	allTodos[date.toString()] = updatedTodos;
+	allTodos[todoKeyFromDate(deletedTodo.startTime)] = updatedTodos;
 	localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(allTodos));
 }
 
@@ -59,6 +60,21 @@ export function getAllTodos(): Record<string, Todo[]> {
 
 export function getTodosByDate(date: Date) {
 	const allTodos = getAllTodos();
-	const todos = allTodos[date.toString()] || [];
-	return todos;
+	const todos = allTodos[todoKeyFromDate(date)] || [];
+	return NormalizeTodos(todos);
+}
+
+function todoKeyFromDate(date: Date) {
+	return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
+function NormalizeTodos(todos: Todo[]) {
+	return todos.map((todo: Todo) => {
+		const _todo = { ...todo };
+
+		_todo.startTime = new Date(_todo.startTime);
+		_todo.endTime = new Date(_todo.endTime);
+
+		return _todo;
+	});
 }

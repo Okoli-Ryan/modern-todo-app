@@ -1,13 +1,16 @@
-import "./MyTasks.scss";
+import './MyTasks.scss';
 
-import { List } from "antd";
+import { List } from 'antd';
 
-import MyTask from "./components/MyTask";
-import useMyTasks from "./useMyTasks";
+import { Todo } from '@/models/Todo';
 
-export default function MyTasks() {
-	const { todoList } = useMyTasks();
+import MyTask from './components/MyTask';
 
+interface IMyTasks {
+	todoList: Todo[];
+}
+
+export default function MyTasks({ todoList }: IMyTasks) {
 	return (
 		<div>
 			<h3 className="text-base font-bold text-darkGray">My Tasks</h3>

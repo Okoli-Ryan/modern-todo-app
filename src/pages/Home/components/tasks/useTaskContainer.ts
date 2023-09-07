@@ -1,11 +1,50 @@
-import { useState } from "react";
+import { isSameDay } from 'date-fns';
+import { useEffect, useState } from 'react';
 
-import { useTaskContext } from "./context/TaskContext";
+import { getTodosByDate } from '@/lib/todoLib';
+import { fetchTodosAsync } from '@/lib/todoLibAsync';
+import { Todo } from '@/models/Todo';
+
+import { addTimeStampToTodoList } from './components/MyTasks/utils/helpers';
+import { useTaskContext } from './context/TaskContext';
 
 export default function useTaskContainer() {
 	const [showTaskModal, setShowTaskModal] = useState(false);
 	const [inEditMode, setInEditMode] = useState(false);
-	const { selectedTodo, setSelectedTodo } = useTaskContext();
+	const [isLoading, setIsLoading] = useState(true);
+	const [todoList, setTodoList] = useState<Todo[]>([]);
+	const { selectedTodo, setSelectedTodo, selectedDate } = useTaskContext();
+
+	useEffect(() => {
+		async function getTodos() {
+			try {
+				setIsLoading(true);
+
+				console.log(selectedDate);
+				const todos = getTodosByDate(selectedDate!);
+
+				//Fetch Todos from JsonPlaceholder only for current day
+				if (isSameDay(selectedDate!, new Date())) {
+					const asyncTodos = await fetchTodosAsync();
+					const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
+
+					todos.push(...asyncTodosWithTimeStamp);
+				}
+
+				setTodoList(todos);
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setIsLoading(false);
+			}
+		}
+
+		getTodos();
+	}, [selectedDate]);
+
+	function onAddTodo(payload: Todo) {
+		setTodoList([payload, ...todoList]);
+	}
 
 	function closeModalForm() {
 		setInEditMode(false);
@@ -21,5 +60,5 @@ export default function useTaskContainer() {
 		setInEditMode(true);
 	}
 
-	return { showTaskModal, openAddTaskModal, closeModalForm, selectedTodo, setSelectedTodo, setOnEditMode, inEditMode };
+	return { showTaskModal, openAddTaskModal, closeModalForm, selectedTodo, setSelectedTodo, setOnEditMode, inEditMode, todoList, onAddTodo };
 }

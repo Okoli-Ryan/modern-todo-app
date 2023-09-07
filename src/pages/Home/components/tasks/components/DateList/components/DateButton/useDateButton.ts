@@ -1,6 +1,6 @@
-import { format, getDate, isSameDay } from "date-fns";
+import { format, getDate, isSameDay, set } from 'date-fns';
 
-import { useTaskContext } from "../../../../context/TaskContext";
+import { useTaskContext } from '../../../../context/TaskContext';
 
 export default function useDateButton(date: Date) {
 	const { setSelectedDate, selectedDate } = useTaskContext();
