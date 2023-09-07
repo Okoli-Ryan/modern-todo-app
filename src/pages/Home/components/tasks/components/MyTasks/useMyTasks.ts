@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { API } from "@/constants/API";
-import { Todo } from "@/models/Todo";
+import { fetchTodosAsync } from '@/lib/todoLibAsync';
+import { Todo } from '@/models/Todo';
 
-import { addTimeStampToTodoList } from "./utils/helpers";
+import { addTimeStampToTodoList } from './utils/helpers';
 
 export default function useMyTasks() {
 	const [isLoading, setIsLoading] = useState(true);
@@ -13,13 +13,10 @@ export default function useMyTasks() {
 		async function getTodos() {
 			try {
 				setIsLoading(true);
-				const response = await fetch(API.getTodos);
+				const todos = await fetchTodosAsync();
 
-				if (response.ok) {
-					const todos = await response.json();
-					const todosWithTimeStamp = addTimeStampToTodoList(todos);
-					setTodoList(todosWithTimeStamp);
-				}
+				const todosWithTimeStamp = addTimeStampToTodoList(todos);
+				setTodoList(todosWithTimeStamp);
 			} catch (error) {
 				console.log(error);
 			} finally {

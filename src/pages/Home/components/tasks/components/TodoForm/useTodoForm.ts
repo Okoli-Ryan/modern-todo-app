@@ -1,18 +1,32 @@
-import { format, isSameDay, set } from "date-fns";
-import { ChangeEvent, useState } from "react";
+import { format, isSameDay, set } from 'date-fns';
+import { ChangeEvent, useState } from 'react';
 
-import { useTaskContext } from "../../context/TaskContext";
+import { saveTodo } from '@/lib/todoLib';
+import { createTodoAsync, updateTodoAsync } from '@/lib/todoLibAsync';
+import { Todo } from '@/models/Todo';
 
-type FormValues = {
+import { useTaskContext } from '../../context/TaskContext';
+import { ITodoForm } from './TodoForm';
+import { NormalizeTodoPayload } from './utils/NormalizeTodoPayload';
+
+export interface FormValues {
 	startTime: Date;
 	endTime: Date;
 	currentDate: Date;
 	title: string;
-};
+}
 
-export default function useTodoForm() {
-	const { selectedDate } = useTaskContext();
-	const [formValues, setFormValues] = useState<FormValues>({ startTime: selectedDate!, endTime: selectedDate!, currentDate: selectedDate!, title: "" });
+export default function useTodoForm({ onClose, data }: ITodoForm) {
+	const { selectedDate, selectedTodo } = useTaskContext();
+	const [isLoading, setIsLoading] = useState(false);
+	const [formValues, setFormValues] = useState<FormValues>({
+		startTime: data?.startTime || selectedDate!,
+		endTime: data?.endTime || selectedDate!,
+		currentDate: data?.startTime || selectedDate!,
+		title: data?.title || "",
+	});
+
+	const inEditMode = !!selectedTodo;
 
 	function onSelectDate(date: Date) {
 		setValue("currentDate", date);
@@ -38,18 +52,52 @@ export default function useTodoForm() {
 		setValue("title", e.target.value);
 	}
 
-	function handleSubmit() {
-		const _currentDate = formValues.currentDate;
-		const _startTime = formValues.startTime;
-		const _endTime = formValues.endTime;
-		const title = formValues.title;
-		const startTime = set(new Date(_startTime), { date: _currentDate.getDate(), month: _currentDate.getMonth(), year: _currentDate.getFullYear() });
-		const endTime = set(new Date(_endTime), { date: _currentDate.getDate(), month: _currentDate.getMonth(), year: _currentDate.getFullYear() });
+	async function handleSubmitOnCreateMode(payload: Todo) {
+		setIsLoading(true);
+		try {
+			const response = await createTodoAsync(payload);
+			saveTodo({ ...response, ...payload });
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
-		console.log({ endTime, startTime, title });
+	async function handleSubmitOnEditMode(payload: Partial<Todo>) {
+		setIsLoading(true);
+		try {
+			const response = await updateTodoAsync(payload);
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
+	}
+
+	async function handleSubmit() {
+		const payload = NormalizeTodoPayload(formValues);
+
+		if (inEditMode) {
+			await handleSubmitOnEditMode(payload);
+		} else {
+			await handleSubmitOnCreateMode(payload);
+		}
+		onClose();
 	}
 
 	const dateButtonLabel = isSameDay(formValues.currentDate, new Date()) ? "Today" : format(formValues.currentDate, "P");
 
-	return { currentDate: formValues.currentDate, onChangeTitle, onSelectDate, dateButtonLabel, setStartTime, setEndTime, handleSubmit, selectedDate };
+	return {
+		currentDate: formValues.currentDate,
+		onChangeTitle,
+		onSelectDate,
+		dateButtonLabel,
+		setStartTime,
+		setEndTime,
+		handleSubmit,
+		selectedDate,
+		isLoading,
+	};
 }

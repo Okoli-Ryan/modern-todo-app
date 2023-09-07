@@ -1,16 +1,16 @@
-import { Input, Popover } from "antd";
-import { IoClose, IoNotificationsSharp } from "react-icons/io5";
+import { Input, Popover } from 'antd';
+import { IoClose, IoNotificationsSharp } from 'react-icons/io5';
 
-import { Todo } from "@/models/Todo";
-import CalendarPicker from "@components/CalenderPicker";
-import { Button } from "@components/FormComponents";
-import TimePicker from "@components/TimePicker";
+import { Todo } from '@/models/Todo';
+import CalendarPicker from '@components/CalenderPicker';
+import { Button } from '@components/FormComponents';
+import TimePicker from '@components/TimePicker';
 
-import useTodoForm from "./useTodoForm";
+import useTodoForm from './useTodoForm';
 
 const { TextArea } = Input;
 
-interface ITodoForm {
+export interface ITodoForm {
 	data: Todo | null;
 	onClose: () => void;
 }
@@ -18,7 +18,10 @@ interface ITodoForm {
 export default function TodoForm({ onClose, data }: ITodoForm) {
 	const inEditMode = !!data;
 
-	const { onSelectDate, currentDate, dateButtonLabel, setEndTime, setStartTime, onChangeTitle, handleSubmit } = useTodoForm();
+	const { onSelectDate, currentDate, dateButtonLabel, setEndTime, setStartTime, onChangeTitle, handleSubmit, isLoading } = useTodoForm({
+		onClose,
+		data,
+	});
 
 	return (
 		<div className="flex flex-col gap-4 p-6">
@@ -28,13 +31,13 @@ export default function TodoForm({ onClose, data }: ITodoForm) {
 					<IoClose className="text-lg text-textColor" />
 				</button>
 			</div>
-			<TextArea rows={4} onChange={onChangeTitle} />
+		<TextArea rows={4} onChange={onChangeTitle} defaultValue={data?.title} />
 			<div className="grid grid-cols-3 gap-2">
 				<Popover trigger="click" destroyTooltipOnHide content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
 					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>
 				</Popover>
-				<TimePicker onChangeDate={setStartTime} />
-				<TimePicker onChangeDate={setEndTime} />
+				<TimePicker onChangeDate={setStartTime} defaultTime={data?.startTime} />
+				<TimePicker onChangeDate={setEndTime} defaultTime={data?.endTime} />
 			</div>
 			<div className="flex items-center gap-2">
 				<span>
@@ -46,8 +49,8 @@ export default function TodoForm({ onClose, data }: ITodoForm) {
 				</span>
 			</div>
 			<div className="grid grid-cols-2 gap-4">
-				<Button>Cancel</Button>
-				<Button onClick={handleSubmit} type="primary">
+				<Button onClick={onClose}>Cancel</Button>
+				<Button loading={isLoading} onClick={handleSubmit} type="primary">
 					{inEditMode ? "Edit" : "Add"}
 				</Button>
 			</div>

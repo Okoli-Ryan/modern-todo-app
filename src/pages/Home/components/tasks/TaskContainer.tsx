@@ -26,7 +26,7 @@ function Tasks() {
 					<TodoForm data={selectedTodo} onClose={closeModalForm} />
 				</BottomSheet>
 				<BottomSheet show={showTodoDetails} onClose={closeModalForm}>
-					<TodoDetails data={selectedTodo} onClose={closeModalForm} setOnEditMode={setOnEditMode} />
+					<TodoDetails data={selectedTodo!} onClose={closeModalForm} setOnEditMode={setOnEditMode} />
 				</BottomSheet>
 			</div>
 		</>

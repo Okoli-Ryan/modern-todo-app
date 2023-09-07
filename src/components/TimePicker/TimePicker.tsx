@@ -1,15 +1,19 @@
-import "./TimePicker.scss";
+import './TimePicker.scss';
 
-import { TimePicker as AntTimePicker, TimePickerProps } from "antd";
-import dayjs from "dayjs";
-import { FaRegClock } from "react-icons/fa";
+import { TimePicker as AntTimePicker, TimePickerProps } from 'antd';
+import dayjs from 'dayjs';
+import { FaRegClock } from 'react-icons/fa';
 
 interface ITimePicker extends TimePickerProps {
 	onChangeDate: (e: Date) => void;
+	defaultStartTime?: Date | null;
+	defaultTime?: Date | null;
 }
 
-export default function TimePicker({ format = "HH:mm a", onChangeDate }: ITimePicker) {
-	const time = dayjs(Date.now()).format(format as string);
+export default function TimePicker({ format = "hh:mm a", onChangeDate, defaultTime }: ITimePicker) {
+	const _defaultTime = defaultTime ? defaultTime : Date.now();
+
+	const time = dayjs(_defaultTime).format(format as string);
 
 	function onChange(e: dayjs.Dayjs | null) {
 		onChangeDate(new Date(e!.toDate()));
