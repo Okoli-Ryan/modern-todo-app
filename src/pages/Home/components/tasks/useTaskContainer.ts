@@ -23,12 +23,12 @@ export default function useTaskContainer() {
 
 				//Fetch Todos from JsonPlaceholder only for current day
 				//! Add this back later
-				// if (isSameDay(selectedDate!, new Date())) {
-				// 	const asyncTodos = await fetchTodosAsync();
-				// 	const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
+				if (isSameDay(selectedDate!, new Date())) {
+					const asyncTodos = await fetchTodosAsync();
+					const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
 
-				// 	todos.push(...asyncTodosWithTimeStamp);
-				// }
+					todos.push(...asyncTodosWithTimeStamp);
+				}
 
 				setTodoList(todos);
 			} catch (error) {
