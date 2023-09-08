@@ -6,6 +6,11 @@
 	font-family: "Inter", sans-serif !important;
 }
 
+html, body, #root {
+    height: 100%;
+    overflow: hidden;
+}
+
 .container {
 	width: clamp(16rem, 90vw, 87.5rem);
 	margin: 0 auto;

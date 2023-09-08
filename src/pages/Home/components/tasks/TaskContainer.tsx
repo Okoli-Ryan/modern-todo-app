@@ -1,4 +1,5 @@
 import BottomSheet from '@components/BottomSheet';
+import CalendarPicker from '@components/CalenderPicker';
 
 import Greeting from '../Greeting';
 import DateList from './components/DateList';
@@ -10,8 +11,20 @@ import TaskProvider from './context/TaskProvider';
 import useTaskContainer from './useTaskContainer';
 
 function Tasks() {
-	const { showTaskModal, closeModalForm, openAddTaskModal, todoList, selectedTodo, inEditMode, setOnEditMode, onEditTodo, onAddTodo, onDeleteTodo } =
-		useTaskContainer();
+	const {
+		showTaskModal,
+		closeModalForm,
+		openAddTaskModal,
+		todoList,
+		selectedTodo,
+		inEditMode,
+		setOnEditMode,
+		onEditTodo,
+		onAddTodo,
+		onDeleteTodo,
+		selectedDate,
+		setSelectedDate,
+	} = useTaskContainer();
 
 	//Show the TodoDetails modal if inEditMode is false and selectedTodo has value
 	const showTodoDetails = !inEditMode && !!selectedTodo;
@@ -20,8 +33,20 @@ function Tasks() {
 		<>
 			<Greeting />
 			<div className="flex flex-col gap-4">
-				<DateList />
-				<MyTasks todoList={todoList} />
+				<div className="grid grid-cols-3 gap-4">
+					<div className="flex flex-col gap-4 col-span-3 lg:col-span-2">
+						<DateList />
+						<MyTasks todoList={todoList} />
+					</div>
+					<div className="hidden lg:flex">
+						<CalendarPicker
+							onDateSelect={(e) => {
+								setSelectedDate(e);
+							}}
+							selectedDate={selectedDate}
+						/>
+					</div>
+				</div>
 				<InputTask openAddTaskModal={openAddTaskModal} />
 				<BottomSheet show={showTaskModal || inEditMode} onClose={closeModalForm} minHeight={inEditMode ? 75 : 0}>
 					<TodoForm data={selectedTodo} onClose={closeModalForm} onAddTodo={onAddTodo} onEditTodo={onEditTodo} />

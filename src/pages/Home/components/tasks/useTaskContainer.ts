@@ -93,6 +93,8 @@ export default function useTaskContainer() {
 		inEditMode,
 		todoList,
 		onAddTodo,
+		selectedDate,
+		setSelectedDate,
 		onEditTodo,
 		onDeleteTodo,
 	};
