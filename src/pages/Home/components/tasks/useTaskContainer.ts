@@ -13,7 +13,7 @@ export default function useTaskContainer() {
 	const [inEditMode, setInEditMode] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [todoList, setTodoList] = useState<Todo[]>([]);
-	const { selectedTodo, setSelectedTodo, selectedDate } = useTaskContext();
+	const { selectedTodo, setSelectedTodo, selectedDate, setSelectedDate } = useTaskContext();
 
 	useEffect(() => {
 		async function getTodos() {
@@ -46,7 +46,23 @@ export default function useTaskContainer() {
 	}
 
 	function onEditTodo(payload: Todo) {
-		setTodoList((prev) => prev.map((todo) => (todo.id === payload.id ? payload : todo)));
+        const currentTodos = [...todoList];
+		const newTodos = [] as Todo[];
+		let hasNewDate = false;
+		for (let i = 0; i < currentTodos.length; i++) {
+			if (currentTodos[i].id === payload.id) {
+				if (!isSameDay(currentTodos[i].startTime, payload.startTime)) {
+					hasNewDate = true;
+					break;
+				}
+				newTodos.push(payload);
+				break;
+			}
+			newTodos.push(currentTodos[i]);
+		}
+
+		setTodoList(newTodos);
+		hasNewDate && setSelectedDate(payload.startTime);
 	}
 
 	function onDeleteTodo(payload: Todo) {
