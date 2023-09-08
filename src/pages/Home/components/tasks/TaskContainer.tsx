@@ -10,7 +10,8 @@ import TaskProvider from './context/TaskProvider';
 import useTaskContainer from './useTaskContainer';
 
 function Tasks() {
-	const { showTaskModal, closeModalForm, openAddTaskModal, todoList, selectedTodo, inEditMode, setOnEditMode, onAddTodo } = useTaskContainer();
+	const { showTaskModal, closeModalForm, openAddTaskModal, todoList, selectedTodo, inEditMode, setOnEditMode, onEditTodo, onAddTodo, onDeleteTodo } =
+		useTaskContainer();
 
 	//Show the TodoDetails modal if inEditMode is false and selectedTodo has value
 	const showTodoDetails = !inEditMode && !!selectedTodo;
@@ -23,10 +24,10 @@ function Tasks() {
 				<MyTasks todoList={todoList} />
 				<InputTask openAddTaskModal={openAddTaskModal} />
 				<BottomSheet show={showTaskModal || inEditMode} onClose={closeModalForm} minHeight={inEditMode ? 75 : 0}>
-					<TodoForm data={selectedTodo} onClose={closeModalForm} onAddTodo={onAddTodo} />
+					<TodoForm data={selectedTodo} onClose={closeModalForm} onAddTodo={onAddTodo} onEditTodo={onEditTodo} />
 				</BottomSheet>
 				<BottomSheet show={showTodoDetails} onClose={closeModalForm}>
-					<TodoDetails data={selectedTodo!} onClose={closeModalForm} setOnEditMode={setOnEditMode} />
+					<TodoDetails data={selectedTodo!} onClose={closeModalForm} setOnEditMode={setOnEditMode} onDeleteTodo={onDeleteTodo} />
 				</BottomSheet>
 			</div>
 		</>

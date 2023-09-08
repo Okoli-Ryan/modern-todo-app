@@ -1,8 +1,11 @@
-import { format } from "date-fns";
+import { format } from 'date-fns';
 
-import { ITodoDetails } from "./TodoDetails";
+import { deleteTodo } from '@/lib/todoLib';
+import { deleteTodoAsync } from '@/lib/todoLibAsync';
 
-export default function useTodoDetails({ data }: Partial<ITodoDetails>) {
+import { ITodoDetails } from './TodoDetails';
+
+export default function useTodoDetails({ data, onDeleteTodo, onClose }: Pick<ITodoDetails, "data" | "onDeleteTodo" | "onClose">) {
 	const { title, startTime: _startTime, endTime: _endTime } = data!;
 
 	const startDate = format(_startTime, "do LLLL, yyyy");
@@ -11,5 +14,11 @@ export default function useTodoDetails({ data }: Partial<ITodoDetails>) {
 
 	const endTime = format(_endTime, "p");
 
-	return { title, startDate, startTime, endTime };
+	async function onDelete() {
+		onDeleteTodo(data);
+		deleteTodo(data);
+		onClose();
+	}
+
+	return { title, startDate, startTime, endTime, onDelete };
 }

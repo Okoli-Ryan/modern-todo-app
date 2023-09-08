@@ -1,11 +1,13 @@
-import { format, formatDistance } from "date-fns";
-import { useState } from "react";
+import { format, formatDistance } from 'date-fns';
+import { useState } from 'react';
 
-import { Todo } from "@/models/Todo";
+import { updateTodo } from '@/lib/todoLib';
+import { updateTodoAsync } from '@/lib/todoLibAsync';
 
-import { useTaskContext } from "../../../../context/TaskContext";
+import { useTaskContext } from '../../../../context/TaskContext';
+import { IMyTask } from './MyTask';
 
-export default function useMyTask(props: Todo) {
+export default function useMyTask(props: IMyTask) {
 	const { startTime, completed } = props;
 	const { setSelectedTodo } = useTaskContext();
 
@@ -15,8 +17,12 @@ export default function useMyTask(props: Todo) {
 		setSelectedTodo(props);
 	}
 
-	function toggleCompleted() {
-		setIsChecked((prev) => !prev);
+	async function toggleCompleted() {
+		const payload = { ...props, completed: !isChecked };
+
+		setIsChecked(payload.completed);
+		updateTodo(payload, payload.startTime);
+		await updateTodoAsync(payload);
 	}
 
 	const normalizeTime = (date: Date) => format(date, "p");

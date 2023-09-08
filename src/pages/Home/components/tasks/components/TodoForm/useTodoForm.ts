@@ -1,7 +1,7 @@
 import { format, isSameDay, set } from 'date-fns';
 import { ChangeEvent, useState } from 'react';
 
-import { saveTodo } from '@/lib/todoLib';
+import { saveTodo, updateTodo } from '@/lib/todoLib';
 import { createTodoAsync, updateTodoAsync } from '@/lib/todoLibAsync';
 import { Todo } from '@/models/Todo';
 
@@ -16,7 +16,7 @@ export interface FormValues {
 	title: string;
 }
 
-export default function useTodoForm({ onClose, data, onAddTodo }: ITodoForm) {
+export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodoForm) {
 	const { selectedDate, selectedTodo } = useTaskContext();
 	const [isLoading, setIsLoading] = useState(false);
 	const [formValues, setFormValues] = useState<FormValues>({
@@ -65,20 +65,21 @@ export default function useTodoForm({ onClose, data, onAddTodo }: ITodoForm) {
 		}
 	}
 
-	async function handleSubmitOnEditMode(payload: Partial<Todo>) {
+	async function handleSubmitOnEditMode(payload: Todo) {
 		setIsLoading(true);
 		try {
-			const response = await updateTodoAsync(payload);
-			console.log(response);
+			await updateTodoAsync(payload);
+			updateTodo(payload, data!.startTime);
+			onEditTodo(payload);
 		} catch (error) {
-			console.log(error);
+			console.log("didnt work");
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
 	async function handleSubmit() {
-		const payload = NormalizeTodoPayload(formValues);
+		const payload = NormalizeTodoPayload({ ...data, ...formValues });
 
 		if (inEditMode) {
 			await handleSubmitOnEditMode(payload);

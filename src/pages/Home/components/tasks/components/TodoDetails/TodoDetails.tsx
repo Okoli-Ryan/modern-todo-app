@@ -1,5 +1,5 @@
 import { FaRegClock } from 'react-icons/fa';
-import { IoCalendarClearOutline, IoClose } from 'react-icons/io5';
+import { IoCalendarClearOutline, IoClose, IoTrash } from 'react-icons/io5';
 
 import { Todo } from '@/models/Todo';
 import { Button } from '@components/FormComponents';
@@ -10,15 +10,18 @@ export interface ITodoDetails {
 	data: Todo;
 	setOnEditMode: () => void;
 	onClose: () => void;
+	onDeleteTodo: (e: Todo) => void;
 }
 
-export default function TodoDetails({ data, setOnEditMode, onClose }: ITodoDetails) {
-
-    const {  endTime, startDate, startTime, title } = useTodoDetails({ data })
+export default function TodoDetails({ data, setOnEditMode, onClose, onDeleteTodo }: ITodoDetails) {
+	const { endTime, startDate, startTime, title, onDelete } = useTodoDetails({ data, onDeleteTodo, onClose });
 
 	return (
 		<div className="flex flex-col gap-4 p-6">
-			<div className="flex items-center justify-end">
+			<div className="flex items-center justify-between ">
+				<button onClick={onDelete}>
+					<IoTrash className="text-xl text-textColor" />
+				</button>
 				<button onClick={onClose}>
 					<IoClose className="text-2xl text-textColor" />
 				</button>

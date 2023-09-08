@@ -14,14 +14,16 @@ export interface ITodoForm {
 	data: Todo | null;
 	onClose: () => void;
 	onAddTodo: (e: Todo) => void;
+	onEditTodo: (e: Todo) => void;
 }
 
-export default function TodoForm({ onClose, data, onAddTodo }: ITodoForm) {
+export default function TodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodoForm) {
 	const inEditMode = !!data;
 
 	const { onSelectDate, currentDate, dateButtonLabel, setEndTime, setStartTime, onChangeTitle, handleSubmit, isLoading } = useTodoForm({
 		onClose,
 		onAddTodo,
+		onEditTodo,
 		data,
 	});
 

@@ -19,17 +19,16 @@ export default function useTaskContainer() {
 		async function getTodos() {
 			try {
 				setIsLoading(true);
-
-				console.log(selectedDate);
 				const todos = getTodosByDate(selectedDate!);
 
 				//Fetch Todos from JsonPlaceholder only for current day
-				if (isSameDay(selectedDate!, new Date())) {
-					const asyncTodos = await fetchTodosAsync();
-					const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
+				//! Add this back later
+				// if (isSameDay(selectedDate!, new Date())) {
+				// 	const asyncTodos = await fetchTodosAsync();
+				// 	const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
 
-					todos.push(...asyncTodosWithTimeStamp);
-				}
+				// 	todos.push(...asyncTodosWithTimeStamp);
+				// }
 
 				setTodoList(todos);
 			} catch (error) {
@@ -46,6 +45,14 @@ export default function useTaskContainer() {
 		setTodoList([payload, ...todoList]);
 	}
 
+	function onEditTodo(payload: Todo) {
+		setTodoList((prev) => prev.map((todo) => (todo.id === payload.id ? payload : todo)));
+	}
+
+	function onDeleteTodo(payload: Todo) {
+		setTodoList((prev) => prev.filter((todo) => todo.id !== payload.id));
+	}
+
 	function closeModalForm() {
 		setInEditMode(false);
 		setShowTaskModal(false);
@@ -60,5 +67,17 @@ export default function useTaskContainer() {
 		setInEditMode(true);
 	}
 
-	return { showTaskModal, openAddTaskModal, closeModalForm, selectedTodo, setSelectedTodo, setOnEditMode, inEditMode, todoList, onAddTodo };
+	return {
+		showTaskModal,
+		openAddTaskModal,
+		closeModalForm,
+		selectedTodo,
+		setSelectedTodo,
+		setOnEditMode,
+		inEditMode,
+		todoList,
+		onAddTodo,
+		onEditTodo,
+		onDeleteTodo,
+	};
 }

@@ -1,10 +1,12 @@
-import { Checkbox } from "antd";
+import { Checkbox } from 'antd';
 
-import { Todo } from "@/models/Todo";
+import { Todo } from '@/models/Todo';
 
-import useMyTask from "./useMyTask";
+import useMyTask from './useMyTask';
 
-export default function MyTask(props: Todo) {
+export interface IMyTask extends Todo {}
+
+export default function MyTask(props: IMyTask) {
 	const { normalizeTime, selectTodo, timeRangeCreated, isChecked, toggleCompleted } = useMyTask(props);
 	const { startTime, endTime, title } = props;
 

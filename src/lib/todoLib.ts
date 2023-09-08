@@ -1,3 +1,5 @@
+import { isSameDay } from 'date-fns';
+
 import { TODOS_STORAGE_KEY } from '@/core/Constants';
 import { Todo } from '@/models/Todo';
 
@@ -17,21 +19,37 @@ export function saveTodo(todo: Todo) {
 	return todo;
 }
 
-export function editTodo(updatedTodo: Todo) {
+export function updateTodo(updatedTodo: Todo, previousTodoStartTime: Date) {
+	const previousTodoDateKey = todoKeyFromDate(previousTodoStartTime);
+	const newTodoDateKey = todoKeyFromDate(updatedTodo.startTime);
 	const allTodos = getAllTodos();
-	const todosForTheDay = allTodos[todoKeyFromDate(updatedTodo.startTime)] || [];
+	const todosForTheDay = allTodos[previousTodoDateKey] || [];
 
-	//! Include logic to remove if date was changed
-	const updatedTodos = todosForTheDay.map((todo) => {
+	let updatedTodos = todosForTheDay.map((todo) => {
 		if (todo.id === updatedTodo.id) {
 			// Replace the existing todo with the updated one
+
+			if (!isSameDay(updatedTodo.startTime, todo.startTime)) {
+				return null;
+			}
+
 			return updatedTodo;
 		} else {
 			return todo;
 		}
 	});
 
-	allTodos[todoKeyFromDate(updatedTodo.startTime)] = updatedTodos;
+	updatedTodos = updatedTodos.filter(Boolean);
+
+	allTodos[previousTodoDateKey] = updatedTodos as Todo[];
+
+	// The todo was updated to a different date
+	if (previousTodoDateKey !== newTodoDateKey) {
+		let newTodos = allTodos[newTodoDateKey] ?? [];
+		newTodos = [updatedTodo, ...newTodos];
+		allTodos[newTodoDateKey] = newTodos;
+	}
+
 	localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(allTodos));
 
 	return updatedTodo;
@@ -55,7 +73,8 @@ export function getAllTodos(): Record<string, Todo[]> {
 		return {};
 	}
 
-	return JSON.parse(response);
+	const parsedResponse = JSON.parse(response);
+	return NormalizeTodoObject(parsedResponse);
 }
 
 export function getTodosByDate(date: Date) {
@@ -77,4 +96,16 @@ function NormalizeTodos(todos: Todo[]) {
 
 		return _todo;
 	});
+}
+
+function NormalizeTodoObject(payload: Record<string, Todo[]>): Record<string, Todo[]> {
+	const normalizedPayload: Record<string, Todo[]> = {};
+
+	for (const key in payload) {
+		if (Object.prototype.hasOwnProperty.call(payload, key)) {
+			normalizedPayload[key] = NormalizeTodos(payload[key]);
+		}
+	}
+
+	return normalizedPayload;
 }

@@ -26,7 +26,7 @@ export async function createTodoAsync(newTodo: Todo): Promise<Todo> {
 }
 
 // Function to update an existing Todo
-export async function updateTodoAsync(updatedTodo: Partial<Todo>): Promise<Todo> {
+export async function updateTodoAsync(updatedTodo: Todo): Promise<Todo> {
 	const response = await fetch(`${BASE_URL}/${updatedTodo.id}`, {
 		method: "PUT",
 		headers: {
@@ -35,7 +35,7 @@ export async function updateTodoAsync(updatedTodo: Partial<Todo>): Promise<Todo>
 		body: JSON.stringify(updatedTodo),
 	});
 	if (!response.ok) {
-		throw new Error("Failed to update Todo");
+		return updatedTodo;
 	}
 	return await response.json();
 }
@@ -45,6 +45,6 @@ export async function deleteTodoAsync(id: number): Promise<void> {
 		method: "DELETE",
 	});
 	if (!response.ok) {
-		throw new Error("Failed to delete Todo");
+		return;
 	}
 }
