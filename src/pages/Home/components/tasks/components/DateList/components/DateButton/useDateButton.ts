@@ -10,7 +10,9 @@ export default function useDateButton(date: Date) {
 	const day = getDate(date);
 
 	function onSelectDate() {
-		setSelectedDate(date);
+		const currentDate = new Date();
+		const newDate = set(date, { hours: currentDate.getHours(), minutes: currentDate.getMinutes() });
+		setSelectedDate(newDate);
 	}
 
 	return { isCurrentDay, dayOfWeek, day, onSelectDate };
