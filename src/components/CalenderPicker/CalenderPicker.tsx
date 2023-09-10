@@ -1,6 +1,8 @@
-import "./Calender.scss"; // Import your CSS file
+import './Calender.scss'; // Import your CSS file
 
-import useCalenderPicker from "./useCalenderPicker";
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+
+import useCalenderPicker from './useCalenderPicker';
 
 export interface CalendarProps {
 	selectedDate: Date | null;
@@ -8,23 +10,23 @@ export interface CalendarProps {
 }
 
 function CalendarPicker(props: CalendarProps) {
-	const { generateCalendar, month, year, handleNextMonth, handlePrevMonth, handleTodayClick, monthNames, currentDate } = useCalenderPicker(props);
+	const { generateCalendar, month, year, handleNextMonth, handlePrevMonth, handleTodayClick, monthNames, selectedDate } = useCalenderPicker(props);
 
 	return (
 		<div id="calendar">
 			<div className="calendar-header">
 				<button className="prev-button" onClick={handlePrevMonth}>
-					&#9665;
+					<BsChevronLeft />
 				</button>
 				<h2>
 					{monthNames[month]} {year}
 				</h2>
 				<button className="next-button" onClick={handleNextMonth}>
-					&#9655;
+					<BsChevronRight />
 				</button>
 			</div>
 			<div className="date-display">
-				<div className="current-date">{currentDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div>
+				<div className="current-date">{selectedDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div>
 				<button className="today-button" onClick={handleTodayClick}>
 					Today
 				</button>

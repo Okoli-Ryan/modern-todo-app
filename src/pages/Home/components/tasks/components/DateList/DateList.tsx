@@ -1,7 +1,7 @@
-import { format } from "date-fns";
+import { format } from 'date-fns';
 
-import DateButton from "./components/DateButton";
-import useDateList from "./useDateList";
+import DateButton from './components/DateButton';
+import useDateList from './useDateList';
 
 export default function DateList() {
 	const { daysArray, selectedDate } = useDateList();

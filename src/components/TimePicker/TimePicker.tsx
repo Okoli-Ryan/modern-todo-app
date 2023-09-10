@@ -16,7 +16,7 @@ export default function TimePicker({ format = "hh:mm a", onChangeDate, defaultTi
 	const time = dayjs(_defaultTime).format(format as string);
 
 	function onChange(e: dayjs.Dayjs | null) {
-		onChangeDate(new Date(e!.toDate()));
+		onChangeDate(e!.toDate());
 	}
 
 	return (

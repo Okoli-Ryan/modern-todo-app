@@ -1,7 +1,6 @@
 import { format } from 'date-fns';
 
 import { deleteTodo } from '@/lib/todoLib';
-import { deleteTodoAsync } from '@/lib/todoLibAsync';
 
 import { ITodoDetails } from './TodoDetails';
 

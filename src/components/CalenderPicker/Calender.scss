@@ -3,7 +3,11 @@
 #calendar {
 	text-align: center;
 	margin: 0 auto;
-    width: max-content;
+	width: 100%;
+	// width: max-content;
+	background-color: white;
+    padding: 1rem;
+    height: max-content;
 }
 
 .calendar-header {
@@ -20,33 +24,38 @@
 	cursor: pointer;
 }
 
+thead {
+    margin-bottom: 1rem;
+}
+
 table {
 	width: 100%;
 }
 
 th,
 td {
-    cursor: pointer;
+	cursor: pointer;
 }
 
-tbody, thead > tr {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(7, minmax(20px, 1fr));
-    justify-items: center;
+tbody,
+thead > tr {
+	display: grid;
+	gap: 10px;
+	grid-template-columns: repeat(7, minmax(20px, 1fr));
+	justify-items: center;
 }
 
 th {
-	background-color: #f2f2f2;
-	font-weight: bold;
+	font-weight: 500;
+	font-size: x-small;
 }
 
 .today {
-	background-color: #ccc;
+	background-color: #eee;
 }
 
 .selected-date {
-	background-color: #3F5BF6;
+	background-color: #3f5bf6;
 	color: #fff;
 }
 
@@ -55,16 +64,41 @@ th {
 }
 
 .day {
-    border-radius: 50%;
-
+	border-radius: 50%;
 }
 
 .day > span {
-    width: 32px;
-    height: 32px;
-    font-size: x-small;
-    display: flex;
-    align-self: center;
-    justify-content:center;
-    align-items: center;
+	width: 32px;
+	height: 32px;
+	font-size: x-small;
+	display: flex;
+	align-self: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.date-display {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 14px;
+	margin-bottom: 1rem;
+}
+
+.current-date {
+	border-radius: 8px;
+	display: flex;
+	width: 100%;
+	padding: 0.7rem;
+	width: 100%;
+	border: 1px solid #ccc;
+	font-size: 12px;
+}
+
+.today-button {
+	border: 1px solid #ccc;
+	font-size: 12px;
+	padding: 0.7rem;
+	border-radius: 8px;
 }

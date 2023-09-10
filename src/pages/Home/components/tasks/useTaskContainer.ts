@@ -11,18 +11,15 @@ import { useTaskContext } from './context/TaskContext';
 export default function useTaskContainer() {
 	const [showTaskModal, setShowTaskModal] = useState(false);
 	const [inEditMode, setInEditMode] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
 	const [todoList, setTodoList] = useState<Todo[]>([]);
 	const { selectedTodo, setSelectedTodo, selectedDate, setSelectedDate } = useTaskContext();
 
 	useEffect(() => {
 		async function getTodos() {
 			try {
-				setIsLoading(true);
 				const todos = getTodosByDate(selectedDate!);
 
 				//Fetch Todos from JsonPlaceholder only for current day
-				//! Add this back later
 				if (isSameDay(selectedDate!, new Date())) {
 					const asyncTodos = await fetchTodosAsync();
 					const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
@@ -33,8 +30,6 @@ export default function useTaskContainer() {
 				setTodoList(todos);
 			} catch (error) {
 				console.log(error);
-			} finally {
-				setIsLoading(false);
 			}
 		}
 
@@ -46,17 +41,17 @@ export default function useTaskContainer() {
 	}
 
 	function onEditTodo(payload: Todo) {
-        const currentTodos = [...todoList];
+		const currentTodos = [...todoList];
 		const newTodos = [] as Todo[];
 		let hasNewDate = false;
 		for (let i = 0; i < currentTodos.length; i++) {
 			if (currentTodos[i].id === payload.id) {
 				if (!isSameDay(currentTodos[i].startTime, payload.startTime)) {
 					hasNewDate = true;
-					break;
+					continue;
 				}
 				newTodos.push(payload);
-				break;
+				continue;
 			}
 			newTodos.push(currentTodos[i]);
 		}
@@ -76,6 +71,8 @@ export default function useTaskContainer() {
 	}
 
 	function openAddTaskModal() {
+        setInEditMode(false);
+		setSelectedTodo(null);
 		setShowTaskModal(true);
 	}
 

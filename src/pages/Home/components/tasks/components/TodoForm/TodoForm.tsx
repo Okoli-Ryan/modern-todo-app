@@ -35,9 +35,13 @@ export default function TodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodo
 					<IoClose className="text-lg text-textColor" />
 				</button>
 			</div>
-			<TextArea rows={4} onChange={onChangeTitle} defaultValue={data?.title} />
+			<TextArea rows={4} onChange={onChangeTitle} defaultValue={data?.title} autoFocus />
 			<div className="grid grid-cols-3 gap-2">
-				<Popover trigger="click" destroyTooltipOnHide content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
+				<Popover
+					placement="topRight"
+					trigger="click"
+					destroyTooltipOnHide
+					content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
 					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>
 				</Popover>
 				<TimePicker onChangeDate={setStartTime} defaultTime={data?.startTime} />

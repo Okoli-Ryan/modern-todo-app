@@ -31,3 +31,13 @@ input {
 .small-btn > span{
     @apply text-xs
 }
+
+.ant-popover-inner {
+    padding: 0
+}
+
+.shadow {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    height: max-content;
+    width: 100%;
+}

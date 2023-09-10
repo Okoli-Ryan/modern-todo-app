@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { CalendarProps } from "./CalenderPicker";
-import CalenderButton from "./components/CalenderButton";
+import { CalendarProps } from './CalenderPicker';
+import CalenderButton from './components/CalenderButton';
 
 export default function useCalenderPicker({ onDateSelect, selectedDate }: CalendarProps) {
 	const currentDate = new Date();
@@ -55,7 +55,7 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 		for (let i = 0; i < firstDay; i++) {
 			const _date = new Date(year, month - 1, daysInPrevMonth - firstDay + i + 1);
 
-			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={"other-month-day"} onClick={handleDateClick} />);
+			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={"other-month"} onClick={handleDateClick} />);
 		}
 
 		// Fill in the days of the current month
@@ -77,7 +77,7 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 		for (let i = 0; i < daysInNextMonth; i++) {
 			const _date = new Date(year, month + 1, i + 1);
 
-			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={"other-month-day"} onClick={handleDateClick} />);
+			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={"other-month"} onClick={handleDateClick} />);
 		}
 
 		return calendar;
@@ -85,6 +85,7 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 
 	return {
 		currentDate,
+		selectedDate: _selectedDate,
 		handleDateClick,
 		generateCalendar,
 		handleTodayClick,

@@ -21,7 +21,7 @@ export default function useMyTask(props: IMyTask) {
 		const payload = { ...props, completed: !isChecked };
 
 		setIsChecked(payload.completed);
-		updateTodo(payload, payload.startTime);
+		updateTodo(payload, startTime);
 		await updateTodoAsync(payload);
 	}
 

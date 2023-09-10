@@ -9,8 +9,9 @@ export function NormalizeTodoPayload(formValues: Partial<Todo> & FormValues): To
 	const _startTime = formValues.startTime;
 	const _endTime = formValues.endTime;
 	const title = formValues.title;
-	const startTime = set(new Date(_startTime), { date: _currentDate.getDate(), month: _currentDate.getMonth(), year: _currentDate.getFullYear() });
-	const endTime = set(new Date(_endTime), { date: _currentDate.getDate(), month: _currentDate.getMonth(), year: _currentDate.getFullYear() });
+	const startTime = set(_startTime, { date: _currentDate.getDate(), month: _currentDate.getMonth(), year: _currentDate.getFullYear() });
+	const endTime = set(_endTime, { date: _currentDate.getDate(), month: _currentDate.getMonth(), year: _currentDate.getFullYear() });
 	const id = formValues.id || Date.now();
+
 	return { endTime, startTime, title, id, completed: false };
 }

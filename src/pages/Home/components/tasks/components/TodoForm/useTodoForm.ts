@@ -1,5 +1,5 @@
 import { format, isSameDay, set } from 'date-fns';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { saveTodo, updateTodo } from '@/lib/todoLib';
 import { createTodoAsync, updateTodoAsync } from '@/lib/todoLibAsync';
@@ -20,20 +20,20 @@ export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: IT
 	const { selectedDate, selectedTodo } = useTaskContext();
 	const [isLoading, setIsLoading] = useState(false);
 	const [formValues, setFormValues] = useState<FormValues>({
-		startTime: data?.startTime || selectedDate!,
-		endTime: data?.endTime || selectedDate!,
+		startTime: data?.startTime || new Date(),
+		endTime: data?.endTime || new Date(),
 		currentDate: data?.startTime || selectedDate!,
 		title: data?.title || "",
 	});
 
 	const inEditMode = !!selectedTodo;
 
-	function onSelectDate(date: Date) {
-		setValue("currentDate", date);
-	}
-
 	function setValue<K extends keyof FormValues>(key: K, value: FormValues[K]) {
 		setFormValues((prev) => ({ ...prev, [key]: value }));
+	}
+
+	function onSelectDate(date: Date) {
+		setValue("currentDate", date);
 	}
 
 	function setStartTime(e: Date) {
