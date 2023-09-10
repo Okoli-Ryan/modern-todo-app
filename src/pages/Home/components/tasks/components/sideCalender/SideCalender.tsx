@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Todo } from "@/models/Todo";
 import CalendarPicker from "@components/CalenderPicker";
 
