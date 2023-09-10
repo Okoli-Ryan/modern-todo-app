@@ -46,6 +46,8 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 		onDateSelect(today);
 	};
 
+    let dayCounter = 0;
+
 	const generateCalendar = () => {
 		const firstDay: number = new Date(year, month, 1).getDay();
 
@@ -54,6 +56,7 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 		// Fill in the leading empty cells for the previous month
 		for (let i = 0; i < firstDay; i++) {
 			const _date = new Date(year, month - 1, daysInPrevMonth - firstDay + i + 1);
+			dayCounter++;
 
 			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={"other-month"} onClick={handleDateClick} />);
 		}
@@ -68,11 +71,13 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 
 			const cellClass: string = isSelected ? "selected-date" : isToday ? "today" : "";
 
+			dayCounter++;
+
 			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={cellClass} onClick={handleDateClick} />);
 		}
 
-		// Fill in the trailing empty cells for the next month
-		const daysInNextMonth = 7 - (calendar.length % 7); // Calculate the number of empty cells needed
+		//Need 42 days to show on calender to prevent height changes
+		const daysInNextMonth = 42 - dayCounter;
 
 		for (let i = 0; i < daysInNextMonth; i++) {
 			const _date = new Date(year, month + 1, i + 1);
