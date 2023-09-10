@@ -53,7 +53,7 @@ export default function TodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodo
 					open={isCalenderOpen}
 					onOpenChange={onChangeCalenderOpen}
 					content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
-					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>
+					<Button className="p-0 text-sm small-btn w-full">{dateButtonLabel}</Button>
 				</Modal>
 				<TimePicker onChangeDate={setStartTime} defaultTime={data?.startTime} />
 				<TimePicker onChangeDate={setEndTime} defaultTime={data?.endTime} />

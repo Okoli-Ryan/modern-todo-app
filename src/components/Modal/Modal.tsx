@@ -8,7 +8,7 @@ interface IModal {
 	onOpenChange: (e: boolean) => void;
 }
 
-export default function Modal({ children, open, className = "", onOpenChange, content }: IModal) {
+export default function Modal({ children, open, onOpenChange, content }: IModal) {
 	const [isModalOpen, setIsModalOpen] = useState(open);
 
 	function onOpenChangeModal() {
@@ -24,12 +24,12 @@ export default function Modal({ children, open, className = "", onOpenChange, co
 		<>
 			<div onClick={onOpenChangeModal}>{children}</div>
 			{isModalOpen && (
-				<div className={className}>
+				<>
 					<div className="fixed inset-0 z-[100] bg-black/25" onClick={onOpenChangeModal}></div>
-					<div className="fixed left-0 z-[120] w-full bg-white rounded-t-3xl">
+					<div className="fixed left-0 top-[50%] translate-y-[-50%] z-[120] w-full bg-white rounded-t-3xl">
 						<div className="relative z-30">{content}</div>
 					</div>
-				</div>
+				</>
 			)}
 		</>
 	);
