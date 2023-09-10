@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { doesDateHaveTask } from "@/core/helpers";
+
 import { CalendarProps } from './CalenderPicker';
 import CalenderButton from './components/CalenderButton';
 
@@ -46,7 +48,7 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 		onDateSelect(today);
 	};
 
-    let dayCounter = 0;
+	let dayCounter = 0;
 
 	const generateCalendar = () => {
 		const firstDay: number = new Date(year, month, 1).getDay();
@@ -58,7 +60,14 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 			const _date = new Date(year, month - 1, daysInPrevMonth - firstDay + i + 1);
 			dayCounter++;
 
-			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={"other-month"} onClick={handleDateClick} />);
+			calendar.push(
+				<CalenderButton
+					key={_date.toISOString()}
+					date={_date}
+					className={`other-month ${doesDateHaveTask(_date) ? "pin" : ""}`}
+					onClick={handleDateClick}
+				/>
+			);
 		}
 
 		// Fill in the days of the current month
@@ -73,7 +82,14 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 
 			dayCounter++;
 
-			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={cellClass} onClick={handleDateClick} />);
+			calendar.push(
+				<CalenderButton
+					key={_date.toISOString()}
+					date={_date}
+					className={`${cellClass} ${doesDateHaveTask(_date) ? "pin" : ""}`}
+					onClick={handleDateClick}
+				/>
+			);
 		}
 
 		//Need 42 days to show on calender to prevent height changes
@@ -82,7 +98,14 @@ export default function useCalenderPicker({ onDateSelect, selectedDate }: Calend
 		for (let i = 0; i < daysInNextMonth; i++) {
 			const _date = new Date(year, month + 1, i + 1);
 
-			calendar.push(<CalenderButton key={_date.toISOString()} date={_date} className={"other-month"} onClick={handleDateClick} />);
+			calendar.push(
+				<CalenderButton
+					key={_date.toISOString()}
+					date={_date}
+					className={`other-month ${doesDateHaveTask(_date) ? "pin" : ""}`}
+					onClick={handleDateClick}
+				/>
+			);
 		}
 
 		return calendar;

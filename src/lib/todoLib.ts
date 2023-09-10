@@ -30,7 +30,7 @@ export function updateTodo(updatedTodo: Todo, previousTodoStartTime: Date) {
 			// Replace the existing todo with the updated one
 
 			if (!isSameDay(updatedTodo.startTime, todo.startTime)) {
-				return null;
+				return undefined;
 			}
 
 			return updatedTodo;
@@ -83,7 +83,7 @@ export function getTodosByDate(date: Date) {
 	return NormalizeTodos(todos);
 }
 
-function todoKeyFromDate(date: Date) {
+export function todoKeyFromDate(date: Date) {
 	return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 

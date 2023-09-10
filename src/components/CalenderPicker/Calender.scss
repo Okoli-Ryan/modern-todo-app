@@ -66,6 +66,7 @@ th {
 
 .day {
 	border-radius: 50%;
+    position: relative;
 }
 
 .day > span {
@@ -102,4 +103,16 @@ th {
 	font-size: 12px;
 	padding: 0.7rem;
 	border-radius: 8px;
+}
+
+.pin::after {
+    content: '';
+    height: 4px;
+    width: 4px;
+    border-radius: 50%;
+    background-color: #3F5BF6;
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
 }
