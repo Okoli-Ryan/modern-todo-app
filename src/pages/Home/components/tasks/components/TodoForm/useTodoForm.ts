@@ -1,5 +1,5 @@
 import { format, isSameDay, set } from 'date-fns';
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { saveTodo, updateTodo } from '@/lib/todoLib';
 import { createTodoAsync, updateTodoAsync } from '@/lib/todoLibAsync';
@@ -19,6 +19,7 @@ export interface FormValues {
 export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodoForm) {
 	const { selectedDate, selectedTodo } = useTaskContext();
 	const [isLoading, setIsLoading] = useState(false);
+    const [isCalenderOpen, setIsCalenderOpen] = useState(false);
 	const [formValues, setFormValues] = useState<FormValues>({
 		startTime: data?.startTime || new Date(),
 		endTime: data?.endTime || new Date(),
@@ -34,6 +35,7 @@ export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: IT
 
 	function onSelectDate(date: Date) {
 		setValue("currentDate", date);
+		setIsCalenderOpen(false);
 	}
 
 	function setStartTime(e: Date) {
@@ -50,6 +52,10 @@ export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: IT
 
 	function onChangeTitle(e: ChangeEvent<HTMLTextAreaElement>) {
 		setValue("title", e.target.value);
+	}
+
+	function onChangeCalenderOpen(newOpen: boolean) {
+		setIsCalenderOpen(newOpen);
 	}
 
 	async function handleSubmitOnCreateMode(payload: Todo) {
@@ -100,6 +106,8 @@ export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: IT
 		setEndTime,
 		handleSubmit,
 		selectedDate,
+		isCalenderOpen,
+		onChangeCalenderOpen,
 		isLoading,
 	};
 }

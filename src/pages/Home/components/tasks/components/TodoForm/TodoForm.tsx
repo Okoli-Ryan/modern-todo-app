@@ -20,7 +20,18 @@ export interface ITodoForm {
 export default function TodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodoForm) {
 	const inEditMode = !!data;
 
-	const { onSelectDate, currentDate, dateButtonLabel, setEndTime, setStartTime, onChangeTitle, handleSubmit, isLoading } = useTodoForm({
+	const {
+		onSelectDate,
+		currentDate,
+		dateButtonLabel,
+		setEndTime,
+		setStartTime,
+		onChangeTitle,
+		handleSubmit,
+		isLoading,
+		isCalenderOpen,
+		onChangeCalenderOpen,
+	} = useTodoForm({
 		onClose,
 		onAddTodo,
 		onEditTodo,
@@ -41,6 +52,8 @@ export default function TodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodo
 					placement="topRight"
 					trigger="click"
 					destroyTooltipOnHide
+					open={isCalenderOpen}
+					onOpenChange={onChangeCalenderOpen}
 					content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
 					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>
 				</Popover>

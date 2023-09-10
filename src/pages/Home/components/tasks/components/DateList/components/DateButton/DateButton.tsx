@@ -8,10 +8,11 @@ export interface IDateButton {
 }
 
 export function DateButton({ date }: { date: Date }) {
-	const { day, dayOfWeek, isCurrentDay, onSelectDate } = useDateButton(date);
+	const { day, dayOfWeek, isCurrentDay, onSelectDate, buttonRef } = useDateButton(date);
 
 	return (
 		<Button
+			ref={buttonRef}
 			type={isCurrentDay ? "primary" : "default"}
 			onClick={onSelectDate}
 			className="flex items-center justify-center flex-col gap-2 border-[1px] border-[#D0D5DD] px-4 py-2.5 min-w-[62px] min-h-[68px] rounded-md">
