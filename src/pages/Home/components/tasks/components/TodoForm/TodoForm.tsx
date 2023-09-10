@@ -1,12 +1,13 @@
-import { Input, Popover } from 'antd';
-import { IoClose, IoNotificationsSharp } from 'react-icons/io5';
+import { Input } from "antd";
+import { IoClose, IoNotificationsSharp } from "react-icons/io5";
 
-import { Todo } from '@/models/Todo';
-import CalendarPicker from '@components/CalenderPicker';
-import { Button } from '@components/FormComponents';
-import TimePicker from '@components/TimePicker';
+import { Todo } from "@/models/Todo";
+import CalendarPicker from "@components/CalenderPicker";
+import { Button } from "@components/FormComponents";
+import Modal from "@components/Modal";
+import TimePicker from "@components/TimePicker";
 
-import useTodoForm from './useTodoForm';
+import useTodoForm from "./useTodoForm";
 
 const { TextArea } = Input;
 
@@ -48,15 +49,12 @@ export default function TodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodo
 			</div>
 			<TextArea rows={4} onChange={onChangeTitle} defaultValue={data?.title} autoFocus />
 			<div className="grid grid-cols-3 gap-2">
-				<Popover
-					placement="topRight"
-					trigger="click"
-					destroyTooltipOnHide
+				<Modal
 					open={isCalenderOpen}
 					onOpenChange={onChangeCalenderOpen}
 					content={<CalendarPicker onDateSelect={onSelectDate} selectedDate={currentDate} />}>
 					<Button className="p-0 text-sm small-btn">{dateButtonLabel}</Button>
-				</Popover>
+				</Modal>
 				<TimePicker onChangeDate={setStartTime} defaultTime={data?.startTime} />
 				<TimePicker onChangeDate={setEndTime} defaultTime={data?.endTime} />
 			</div>

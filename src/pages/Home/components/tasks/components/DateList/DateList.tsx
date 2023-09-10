@@ -1,8 +1,8 @@
-import { Popover } from "antd";
 import { format } from "date-fns";
 import { IoCalendarSharp } from "react-icons/io5";
 
 import CalendarPicker from "@components/CalenderPicker";
+import Modal from "@components/Modal";
 
 import DateButton from "./components/DateButton";
 import useDateList from "./useDateList";
@@ -15,17 +15,14 @@ export default function DateList() {
 			<div className="flex justify-between items-center">
 				<h4 className="text-sm font-medium text-DarkGray">{`${format(selectedDate, "MMMM")} ${selectedDate.getFullYear()}`}</h4>
 				<div className="flex lg:hidden">
-					<Popover
-						placement="bottom"
-						trigger="click"
-						destroyTooltipOnHide
+					<Modal
 						open={isCalenderOpen}
 						onOpenChange={onChangeCalenderOpen}
 						content={<CalendarPicker onDateSelect={onDateSelect} selectedDate={selectedDate} />}>
 						<button>
 							<IoCalendarSharp className="text-xl text-primary" />
 						</button>
-					</Popover>
+					</Modal>
 				</div>
 			</div>
 			<div className="flex w-full gap-4 mt-3 overflow-auto">
