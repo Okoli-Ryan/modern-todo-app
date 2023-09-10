@@ -22,7 +22,7 @@ function Tasks() {
 			<Greeting openAddTaskModal={openAddTaskModal} />
 			<div className="flex flex-col gap-4">
 				<div className="grid grid-cols-3 gap-4">
-					<div className="flex flex-col gap-4 col-span-3 lg:col-span-2 lg:border-r-[1px] border-[#DDD] pr-4">
+					<div className="flex flex-col gap-4 col-span-3 lg:col-span-2 lg:border-r-[1px] border-[#DDD] pr-0 lg:pr-4">
 						<DateList />
 						<MyTasks todoList={todoList} />
 					</div>

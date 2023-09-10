@@ -1,13 +1,14 @@
-import { format, isSameDay, set } from 'date-fns';
+import { notification } from "antd";
+import { format, isSameDay, set } from "date-fns";
 import { ChangeEvent, useState } from "react";
 
-import { saveTodo, updateTodo } from '@/lib/todoLib';
-import { createTodoAsync, updateTodoAsync } from '@/lib/todoLibAsync';
-import { Todo } from '@/models/Todo';
+import { saveTodo, updateTodo } from "@/lib/todoLib";
+import { createTodoAsync, updateTodoAsync } from "@/lib/todoLibAsync";
+import { Todo } from "@/models/Todo";
 
-import { useTaskContext } from '../../context/TaskContext';
-import { ITodoForm } from './TodoForm';
-import { NormalizeTodoPayload } from './utils/NormalizeTodoPayload';
+import { useTaskContext } from "../../context/TaskContext";
+import { ITodoForm } from "./TodoForm";
+import { NormalizeTodoPayload } from "./utils/NormalizeTodoPayload";
 
 export interface FormValues {
 	startTime: Date;
@@ -19,7 +20,7 @@ export interface FormValues {
 export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: ITodoForm) {
 	const { selectedDate, selectedTodo } = useTaskContext();
 	const [isLoading, setIsLoading] = useState(false);
-    const [isCalenderOpen, setIsCalenderOpen] = useState(false);
+	const [isCalenderOpen, setIsCalenderOpen] = useState(false);
 	const [formValues, setFormValues] = useState<FormValues>({
 		startTime: data?.startTime || new Date(),
 		endTime: data?.endTime || new Date(),
@@ -85,6 +86,11 @@ export default function useTodoForm({ onClose, data, onAddTodo, onEditTodo }: IT
 	}
 
 	async function handleSubmit() {
+		if (!formValues.title) {
+			notification.error({ message: "Add Todo title" });
+			return;
+		}
+
 		const payload = NormalizeTodoPayload({ ...data, ...formValues });
 
 		if (inEditMode) {
