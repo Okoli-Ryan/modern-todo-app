@@ -1,11 +1,8 @@
 import { isSameDay } from 'date-fns';
 import { useEffect, useState } from 'react';
 
-import { getTodosByDate } from '@/lib/todoLib';
-import { fetchTodosAsync } from '@/lib/todoLibAsync';
-import { Todo } from '@/models/Todo';
+import { Todo } from "@/models/Todo";
 
-import { addTimeStampToTodoList } from './components/MyTasks/utils/helpers';
 import { useTaskContext } from './context/TaskContext';
 
 export default function useTaskContainer() {
@@ -15,25 +12,21 @@ export default function useTaskContainer() {
 	const { selectedTodo, setSelectedTodo, selectedDate, setSelectedDate } = useTaskContext();
 
 	useEffect(() => {
-		async function getTodos() {
-			try {
-				const todos = getTodosByDate(selectedDate!);
-
-				//Fetch Todos from JsonPlaceholder only for current day
-				if (isSameDay(selectedDate!, new Date())) {
-					const asyncTodos = await fetchTodosAsync();
-					const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
-
-					todos.push(...asyncTodosWithTimeStamp);
-				}
-
-				setTodoList(todos);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-
-		getTodos();
+		// async function getTodos() {
+		// 	try {
+		// 		const todos = getTodosByDate(selectedDate!);
+		// 		//Fetch Todos from JsonPlaceholder only for current day
+		// 		if (isSameDay(selectedDate!, new Date())) {
+		// 			const asyncTodos = await fetchTodosAsync();
+		// 			const asyncTodosWithTimeStamp = addTimeStampToTodoList(asyncTodos);
+		// 			todos.push(...asyncTodosWithTimeStamp);
+		// 		}
+		// 		setTodoList(todos);
+		// 	} catch (error) {
+		// 		console.log(error);
+		// 	}
+		// }
+		// getTodos();
 	}, [selectedDate]);
 
 	function onAddTodo(payload: Todo) {

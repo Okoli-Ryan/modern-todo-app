@@ -12,8 +12,8 @@ export default function DateList() {
 
 	return (
 		<div className="sticky z-20 py-4 bg-white top-16">
-			<div className="flex justify-between items-center">
-				<h4 className="text-sm font-medium text-DarkGray">{`${format(selectedDate, "MMMM")} ${selectedDate.getFullYear()}`}</h4>
+			<div className="flex items-center justify-between">
+				<h4 className="text-sm font-medium text-DarkGray">{`${format(selectedDate, "MMMM dd, YYY")}`}</h4>
 				<div className="flex lg:hidden">
 					<Modal
 						open={isCalenderOpen}
